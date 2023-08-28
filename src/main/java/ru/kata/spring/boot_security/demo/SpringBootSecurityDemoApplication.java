@@ -14,12 +14,12 @@ public class SpringBootSecurityDemoApplication {
 		SpringApplication.run(SpringBootSecurityDemoApplication.class, args);
 	}
 
-	CommandLineRunner run(UserService userService) {
-		return args -> {
-			userService.saveRoleForUser(new Role("ROLE_ADMIN"));
-			userService.saveUser(new UserMan("admin", "admin", 30, "123"));
-
-		};
-	}
+//	CommandLineRunner run(UserService userService) {
+//		return args -> {
+//			userService.saveRoleForUser(new Role("ROLE_ADMIN"));
+//			userService.saveUser(new UserMan("admin", "admin", 30, "123"));
+//
+//		};
+//	}
 
 }

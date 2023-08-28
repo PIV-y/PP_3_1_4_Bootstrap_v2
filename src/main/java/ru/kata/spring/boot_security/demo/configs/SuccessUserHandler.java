@@ -28,26 +28,15 @@ public class SuccessUserHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
                                         HttpServletResponse httpServletResponse,
                                         Authentication authentication) throws IOException {
-        System.out.println("SuccessUserHandler: User successfully authenticated.");
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 
-        String username = authentication.getName();
-        String password = (String) authentication.getCredentials();
-        System.out.println("usrName: " + username + "; psw: " + password + "; roles: " + roles );
-
-        try {
-            if (roles.contains("ROLE_ADMIN")) {
-                System.out.println("Role is ADMIN, Welcome");
-                httpServletResponse.sendRedirect("/admin/users");
-            } else if (roles.contains("ROLE_USER")) {
-                System.out.println("Role is USER, Welcome");
-                httpServletResponse.sendRedirect("/users/read_profile");
-            } else {
-                System.out.println("фильтры по ролям не прошли");
-                httpServletResponse.sendRedirect("/");
-            }
-        } catch (Exception e) {
-            System.out.println("Не правильное имя или нет такого пользователя");
+        if (roles.contains("ROLE_ADMIN")) {
+            httpServletResponse.sendRedirect("/admin/users");
+        } else if (roles.contains("ROLE_USER")) {
+            httpServletResponse.sendRedirect("/users/read_profile");
+        } else {
+            httpServletResponse.sendRedirect("/");
         }
+        System.out.println("Не правильное имя или нет такого пользователя");
     }
 }

@@ -39,11 +39,7 @@ public class AuthProviderImp implements AuthenticationProvider {
             throw new BadCredentialsException("no confirmation");
         }
 
-        System.out.println("principals:  " + userForAuth);
-        System.out.println("pswrd:  " + pswrdFromAuth);
-//        Collection<? extends GrantedAuthority> auth = userService.getUserByName(nameFromAuth).getAuthorities();
         Collection<? extends GrantedAuthority> auth = userForAuth.getRoles();
-        System.out.println("Roles: " + auth.toString());
 
         return new UsernamePasswordAuthenticationToken(userForAuth, pswrdFromAuth, auth);
     }

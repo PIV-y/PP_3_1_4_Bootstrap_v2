@@ -79,11 +79,4 @@ public class UserDaoImp implements UserDao {
                 .setParameter("name", userName)
                 .getSingleResult();
     }
-//    @Override
-//    public UserMan getUserByName(String userName) {
-//        return entityManager.createQuery(HQL_GET_USER_BY_NAME, UserMan.class)
-//                .setParameter("NAME", userName)
-//                .setHint("javax.persistence.fetchgraph", entityManager.getEntityGraph("user-with-roles"))
-//                .getSingleResult();
-//    }
 }

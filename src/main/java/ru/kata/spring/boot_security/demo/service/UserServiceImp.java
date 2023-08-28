@@ -21,7 +21,6 @@ public class UserServiceImp implements UserService {
     @Transactional
     public void dropData() {
         userDao.dropData();
-        System.out.println("в сервис команда удаления прошла успешно");
     }
 
     @Override
