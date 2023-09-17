@@ -1,77 +1,58 @@
 package ru.kata.spring.boot_security.demo.controller;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.model.Role;
-import ru.kata.spring.boot_security.demo.model.UserMan;
-import ru.kata.spring.boot_security.demo.service.UserService;
-
-import java.util.Arrays;
+import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.services.AdminServiceImpl;
 
 @Controller
+@RequestMapping("/admin")
 public class AdminController {
-    private UserService userService;
 
-    public AdminController(UserService userService) {
-        this.userService = userService;
+    private final AdminServiceImpl adminServiceImpl;
+
+
+    @Autowired
+    public AdminController(AdminServiceImpl adminServiceImpl) {
+        this.adminServiceImpl = adminServiceImpl;
     }
 
-// Стартовая страница
+
     @GetMapping("/")
-    public String printStart (Model model) {
-        model.addAttribute("messages", "HEllO");
-        return "start";
+    public String showAllUsers (Model model) {
+        model.addAttribute("users", adminServiceImpl.showUsers());
+        return "all-users";
     }
 
-// Сортировочный метод
-    @GetMapping("/sort")
-    public String printMyPage (Model model) {
-        //Объект Authentication в Spring Security содержит информацию об аутентификации пользователя.
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof User) {
-            User user = (User) authentication.getPrincipal();
-            if (user.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"))) {
-                return "redirect:/admin/users";
-            } else if (user.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_USER"))) {
-                return "redirect:/users/read_profile";
-            }
-        } else {
-            System.out.println("фильтры контроллера не пройдены!");
-        }
-        return "redirect:/";
+    @GetMapping ("/delete/{id}")
+    public String deleteUser (@PathVariable(value = "id") Long id) {
+        adminServiceImpl.deleteUserById(id);
+        return "redirect:/admin/";
     }
 
-// Получить список Пользователей GET
-    @GetMapping("/admin/users")
-    public String printUserList (Model model) {
-        model.addAttribute("user", userService.getAllUsers());
-        return "users";
+    @GetMapping("/addNewUser")
+    public String addNewUser (@ModelAttribute("user") User user) {
+        return "user-info";
     }
 
-// Добавить пользователя POST
-    @PostMapping("/admin/users")
-    public String saveUser(@ModelAttribute("user") UserMan user, @RequestParam("roleName") String roleName) {
-        user.setRoles(Arrays.asList(new Role(roleName)));
-        userService.saveUser(user);
-        System.out.println(user.toString());
-        return "redirect:/admin/users";
+    @PostMapping("/saveUser")
+    public String saveUser (@ModelAttribute("user") User user) {
+        adminServiceImpl.saveUser(user);
+        return "redirect:/admin/";
     }
 
-// Переход на форму создания нового юзера GET
-    @GetMapping("/admin/users/new")
-    public String addNewUserInfo (Model model) {
-        model.addAttribute("user", new UserMan());
-    return "add new user";
+    @GetMapping("/update/{id}")
+    public String updateUser (@PathVariable(value = "id") Long id, Model model) {
+        model.addAttribute("user", adminServiceImpl.showUser(id));
+        return "update";
     }
 
-// Получение юзера по ID для редактирования
-    @PostMapping ("/admin/users/{id}/edit")
-    public String editUser(Model model, @RequestParam("id") int id) {
-        model.addAttribute("user", userService.getUserById(id));
-        return "edit";
+    @PostMapping("/{id}")
+    public String update(@ModelAttribute("user") User user, @PathVariable(value = "id") Long id) {
+        adminServiceImpl.updateUser(id,user);
+        return "redirect:/admin/";
     }
 }
