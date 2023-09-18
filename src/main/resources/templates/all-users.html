@@ -32,7 +32,7 @@
                     <button type="submit" th:method="GET" th:formaction="${'/admin/update/'+user.id}">Update</button>
                 </td>
                 <td>
-                    <button type="submit" th:method="GET" th:formaction="${'/admin/delete/'+user.id}">Delete</button>
+                    <button type="submit" th:method="DELETE" th:formaction="${'/admin/delete/'+user.id}">Delete</button>
                 </td>
             </tr>
             </form>

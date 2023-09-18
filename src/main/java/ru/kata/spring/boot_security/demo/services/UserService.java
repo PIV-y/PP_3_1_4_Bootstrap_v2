@@ -17,4 +17,6 @@ public interface UserService {
     public void saveUser(User user);
 
     public void deleteUserById(Long id);
+
+    public void register(User user);
 }
