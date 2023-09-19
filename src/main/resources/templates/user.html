@@ -15,20 +15,19 @@
             <th>Age</th>
             <th>Roles</th>
         </tr>
-            <form th:object="${user}">
-                <tr>
-                    <td th:text="${user.getId()}"></td>
-                    <td th:text="${user.getUsername()}"></td>
-                    <td th:text="${user.getLastName()}"></td>
-                    <td th:text="${user.getAge()}"></td>
-                    <td th:text="${user.getRoles()}"></td>
-                </tr>
-            </form>
+        <form th:object="${user}">
+            <tr>
+                <td th:text="${user.getId()}"></td>
+                <td th:text="${user.getUsername()}"></td>
+                <td th:text="${user.getLastName()}"></td>
+                <td th:text="${user.getAge()}"></td>
+                <td th:text="${user.getRoles()}"></td>
+            </tr>
+        </form>
     </table>
     <br>
 </div>
 <br/>
-
 <br/>
 You can logout
 <form th:action="@{/logout}" th:method="POST">

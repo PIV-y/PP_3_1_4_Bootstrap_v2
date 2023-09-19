@@ -9,29 +9,38 @@
 <br>
 
 <form th:method="POST" th:action="@{/admin/saveUser}" th:object="${user}" >
-    <label for="username">Name: </label>
+    <label for="username">Enter name: </label>
     <input type="text" th:field="*{username}" id="username">
     <div style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</div>
     <br/>
-    <label for="lastName">SureName: </label>
+    <label for="lastName">Enter sureName: </label>
     <input type="text" th:field="*{lastName}" id="lastName">
     <div style="color: red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Lastname Error</div>
     <br/>
-    <label for="age">Age: </label>
+    <label for="email">Enter e-mail: </label>
+    <input type="text" th:field="*{email}" id="email">
+    <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
+    <br/>
+    <label for="age">Enter age: </label>
     <input type="text" th:field="*{age}" id="age">
     <div style="color: red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error</div>
     <br/>
-    <label for="password">Password: </label>
+    <label for="password">Enter password: </label>
     <input type="password" th:field="*{password}" id="password">
     <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
     <br/>
+    <p>
+        <label>Roles:
+            <input type="checkbox" name="roleList"
+                   th:each="role : ${roleList}"
+                   th:text="${role.getNoPrefix()}"
+                   th:value="${role.id}"
+                   th:field="*{roles}"
+            />
+        </label>
+    </p>
+    <br>
     <input type="submit" value="Sign up!">
-</form>
-
-<br/>
-You can logout
-<form th:action="@{/logout}" th:method="POST">
-    <input type="submit" value="Logout" />
 </form>
 
 </body>
