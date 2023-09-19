@@ -45,13 +45,13 @@ public class AdminController {
     }
 
     @GetMapping("/update/{id}")
-    public String updateUser (@PathVariable(value = "id") Long id, Model model) {
+    public String getUserForUpdate (@PathVariable(value = "id") Long id, Model model) {
         model.addAttribute("user", userService.showUser(id));
         return "update";
     }
 
     @PostMapping("/{id}")
-    public String update(@ModelAttribute("user") User user, @PathVariable(value = "id") Long id) {
+    public String updateUser (@ModelAttribute("user") User user, @PathVariable(value = "id") Long id) {
         userService.updateUser(id,user);
         return "redirect:/admin/";
     }
