@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 
+import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import ru.kata.spring.boot_security.demo.services.UserService;
 public class AdminController {
 
     private final UserService userService;
+    private static final Logger log = LoggerFactory.getLogger(AdminController.class);
 
 
     @Autowired
@@ -41,6 +43,7 @@ public class AdminController {
     @PostMapping("/saveUser")
     public String saveUser (@ModelAttribute("user") User user) {
         userService.saveUser(user);
+        log.info("Добавили пользователя");
         return "redirect:/admin/";
     }
 
@@ -53,6 +56,7 @@ public class AdminController {
     @PostMapping("/{id}")
     public String updateUser (@ModelAttribute("user") User user, @PathVariable(value = "id") Long id) {
         userService.updateUser(id,user);
+        log.info("Изменение пользователя произошло успешно");
         return "redirect:/admin/";
     }
 }

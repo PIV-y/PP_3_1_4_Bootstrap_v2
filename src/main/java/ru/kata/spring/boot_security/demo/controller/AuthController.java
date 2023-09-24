@@ -1,5 +1,7 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -16,7 +18,7 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
-
+    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
     private final UserService userService;
     private final UserValidator userValidator;
 
@@ -28,6 +30,7 @@ public class AuthController {
 
     @GetMapping("/login")
     public String loginPage() {
+        log.info("Аунтентификация");
         return "auth/login";
     }
 
@@ -42,10 +45,12 @@ public class AuthController {
         userValidator.validate(user,bindingResult);
 
         if (bindingResult.hasErrors()) {
+            log.info("Регистрация прошла Не успешно");
             return "/auth/registration";
         }
 
         userService.register(user);
+        log.info("Регистрация прошла успешно");
 
         return "redirect:/auth/login";
     }
